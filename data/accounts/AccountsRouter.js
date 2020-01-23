@@ -42,13 +42,13 @@ router.post('/', (req, res) => {
 //     // knex.insert(postData).into('posts')
 //     // second argument "id") will show a warning on console when use SQLite
 //     // it's there for the future (when we move to MySQL or Postgres)
-    knex('accounts')
+    db('accounts')
         .insert(postData, "id")
         .then(ids => {
             // returns an array of one element, the id of the last record inserted
             const id = ids[0];
 
-        return knex("accounts")
+        return db("accounts")
                 .select('id', 'name', 'budget')
                 .where({ id })
                 .first()
@@ -86,9 +86,9 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    db   
+    db("accounts")   
         .where({ id: req.params.id }) // ALWAYS FILTER ON UPDATE AND DELETE
-        .delete()
+        .del()
         .then(count => {
             res.status(200).json({ message: `${count} records(s) added`});
         })
